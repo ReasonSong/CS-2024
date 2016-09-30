@@ -3,7 +3,6 @@
 
 #include "cards.hpp"
 #include <random>
-#include <iostream>
 
 using namespace std;
 
@@ -106,12 +105,9 @@ bool Hand::isTwoPairs(){
     int faceTable[14] = {0};
     for (int i = 0; i < 5; ++ i) {
         ++ faceTable[hand[i].getFace()];
+        if (faceTable[hand[i].getFace()] > 1) ++pairCount;
+        if (faceTable[hand[i].getFace()] > 3 || pairCount == 2) return true;
     }
-    for (int i = 0; i < 14; ++i) {
-        if (faceTable[i] > 1) ++pairCount;
-        if (faceTable[i] > 3 || pairCount == 2) return true;
-    }
-
     return false;
 };
 
@@ -142,16 +138,15 @@ bool Hand::isAFlush(){
 };
 
 bool Hand::isAStraight(){
-    int table[5] = {0};
+    int table[5];
     for (int i = 0; i < 5; ++i) {
         table[i] = hand[i].getFace();
-        std::sort(table, table+5);
     }
+    std::sort(table, table+5);
     for (int i = 0; i < 4; ++i) {
-        if (table[i+1] - table[i] > 1){
+        if (table[i+1] - table[i] != 1){
             return false;
         }
     }
     return true;
 };
-
