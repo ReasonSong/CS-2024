@@ -3,6 +3,7 @@
 
 #include "cards.hpp"
 #include <random>
+#include <iostream>
 
 using namespace std;
 
@@ -75,7 +76,7 @@ bool DeckOfCards::moreCards(){
 // ======================================================================
 
 Hand::Hand(){
-    
+
     // Create a deck of cards and shuffle it
     DeckOfCards D;
     D.shuffle();
@@ -101,6 +102,16 @@ bool Hand::isAPair(){
 };
 
 bool Hand::isTwoPairs(){
+    int pairCount = 0;
+    int faceTable[14] = {0};
+    for (int i = 0; i < 5; ++ i) {
+        ++ faceTable[hand[i].getFace()];
+    }
+    for (int i = 0; i < 14; ++i) {
+        if (faceTable[i] > 1) ++pairCount;
+        if (faceTable[i] > 3 || pairCount == 2) return true;
+    }
+
     return false;
 };
 
@@ -131,6 +142,16 @@ bool Hand::isAFlush(){
 };
 
 bool Hand::isAStraight(){
-    return false;
+    int table[5] = {0};
+    for (int i = 0; i < 5; ++i) {
+        table[i] = hand[i].getFace();
+        std::sort(table, table+5);
+    }
+    for (int i = 0; i < 4; ++i) {
+        if (table[i+1] - table[i] > 1){
+            return false;
+        }
+    }
+    return true;
 };
 
