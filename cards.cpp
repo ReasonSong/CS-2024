@@ -105,8 +105,9 @@ bool Hand::isTwoPairs(){
     int faceTable[14] = {0};
     for (int i = 0; i < 5; ++ i) {
         ++ faceTable[hand[i].getFace()];
-        if (faceTable[hand[i].getFace()] > 1) ++pairCount;
-        if (faceTable[hand[i].getFace()] > 3 || pairCount == 2) return true;
+        if (faceTable[hand[i].getFace()] == 2 || faceTable[hand[i].getFace()] == 4)
+            ++pairCount;
+        if (pairCount == 2) return true;
     }
     return false;
 };
@@ -138,11 +139,11 @@ bool Hand::isAFlush(){
 };
 
 bool Hand::isAStraight(){
-    int table[5];
+    int table[5]= {0};
     for (int i = 0; i < 5; ++i) {
         table[i] = hand[i].getFace();
     }
-    std::sort(table, table+5);
+    sort(table, table+5);
     for (int i = 0; i < 4; ++i) {
         if (table[i+1] - table[i] != 1){
             return false;
